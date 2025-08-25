@@ -1,0 +1,48 @@
+{% extends "partials/base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+  <div class="container py-5">
+    <div class="bg-dark p-4 rounded mb-4 text-center">
+      <h1 class="bg-light">My Simple "Food Order" Web Application</h1>
+    </div>
+    <img src="/static/assets/shaurmisxorci.jfif" class="img-fluid rounded mb-4" alt="Main Shaurma">
+
+   <div class="bg-light text-dark p-4 rounded mb-4">
+   <h3 class="text-primary">ჩვენი მენიუ</h3>
+    <ul class="list-group mb-4">
+      {% for product in products %}
+      <a href="{{ url_for('product.view', product_id=product.id) }}" class="text-decoration-none text-dark">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            style="background-color: #ffebcd; cursor: pointer;">
+          <div>
+            <strong>{{ product.name }}</strong> - {{ product.price }}$
+          </div>
+          <img src="{{ url_for('static', filename='assets/' ~ product.image) }}"
+               class="img-thumbnail"
+               style="width: 140px; height: 110px;"
+               alt="{{ product.name }}">
+        </li>
+      </a>
+      {% endfor %}
+    </ul>
+  </div>
+
+
+
+    <div class="bg-primary p-3 rounded mb-4 text-center">
+      <a href="/feedback" class="btn btn-light btn-lg">გაგვიზიარე შეფასება</a>
+    </div>
+
+
+    <div class="bg-warning text-dark p-3 rounded">
+      <h3>ჩვენი ფილიალები</h3>
+      <ul class="list-group">
+        <li class="list-group-item">გლდანი, ა მიკრო</li>
+        <li class="list-group-item">გლანი, I მიკრო</li>
+        <li class="list-group-item">საბურთალო</li>
+      </ul>
+    </div>
+
+  </div>
+
+{% endblock %}

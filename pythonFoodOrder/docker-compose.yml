@@ -1,0 +1,40 @@
+
+services:
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    restart: always
+
+  flask:
+    build: .
+    container_name: flask_docker
+    expose:
+      - 5000
+    environment:
+      SECRET_KEY: Real_SecreT-S!gma-Key_!23
+      DB_USER: python_intern-user
+      DB_PASSWORD: Wyali!12345
+      DB_DATABASE: python_intern-db
+      DB_HOST: postgres_db
+      DB_PORT: 5432
+    depends_on:
+      - postgres_db
+    restart: always
+
+  postgres_db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: python_intern-user
+      POSTGRES_PASSWORD: Wyali!12345
+      POSTGRES_DB: python_intern-db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+
+volumes:
+  pgdata:
