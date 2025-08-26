@@ -1,72 +1,108 @@
 {% extends "partials/base.html" %}
-{% block title %}feedback{% endblock %}
+{% block title %}Feedback{% endblock %}
 {% block body %}
+<div class="container-fluid p-0">
+    <!-- Hero Header -->
+    <section class="text-center text-white d-flex align-items-center justify-content-center"
+             style="height: 220px; background: linear-gradient(135deg, #28a745, #218838);">
+        <div>
+            <h1 class="display-4 fw-bold">We Value Your Feedback</h1>
+            <p class="lead text-light">Your opinion helps us improve every day</p>
+        </div>
+    </section>
 
-  <div class="container py-5">
-    <h1 class="mb-4 fw-semibold">We Value Your Feedback</h1>
+    <!-- Feedback Form -->
+    <section class="container my-5">
+        <div class="card shadow-lg rounded-4 border-0 p-4 mx-auto" style="max-width: 1000px;">
+            <h3 class="text-center fw-bold mb-4">Share Your Experience</h3>
+            <form method="POST" action="/feedback">
+                {{ form.hidden_tag() }}
 
-
-    <div class="mb-3">
-      <label for="branchSelect" class="form-label">Choose branch</label>
-      <select class="form-select" id="branchSelect">
-        <option>გლდანი, ა მიკრო</option>
-        <option>გლდანი, I მიკრო</option>
-        <option>საბურთალო</option>
-      </select>
-    </div>
-
-
-    <div class="d-flex flex-wrap gap-2 mb-3">
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-white" style="background-color: #ff0000;">1</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-white" style="background-color: #ff3300;">2</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-white" style="background-color: #ff6600;">3</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-white" style="background-color: #ff9900;">4</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-dark" style="background-color: #ffcc00;">5</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-dark" style="background-color: #ccff00;">6</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-dark" style="background-color: #99ff00;">7</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-dark" style="background-color: #66ff00;">8</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-dark" style="background-color: #33ff00;">9</span>
-      </label>
-      <label class="form-check-label">
-        <input type="radio" name="rating" class="btn-check" autocomplete="off">
-        <span class="btn rounded-circle text-dark" style="background-color: #00ff00;">10</span>
-      </label>
-    </div>
+                <!-- Rating -->
+                <div class="rating d-flex justify-content-center gap-2" style="direction: rtl;">
+                    {% for value in range(1,6) %}  <!-- 1 to 5 -->
+                    <input type="radio" id="star{{ value }}" name="rating" value="{{ value }}" class="d-none">
+                    <label for="star{{ value }}" class="star">&#9733;</label>
+                    {% endfor %}
+                </div>
 
 
-    <div class="mb-3">
-      <label for="adviceTextarea" class="form-label">Your advice</label>
-      <textarea class="form-control" id="adviceTextarea" rows="4" placeholder="Write anything helpful..."></textarea>
-    </div>
+                <!-- User Info -->
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        {{ form.name.label(class="form-label fw-semibold") }}
+                        {{ form.name(class="form-control form-control-lg rounded-3") }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.email.label(class="form-label fw-semibold") }}
+                        {{ form.email(class="form-control form-control-lg rounded-3") }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.phone.label(class="form-label fw-semibold") }}
+                        {{ form.phone(class="form-control form-control-lg rounded-3") }}
+                    </div>
+                </div>
 
-    <button class="btn btn-primary px-4">Send</button>
-  </div>
+                <!-- Comment -->
+                <div class="mt-4">
+                    {{ form.comment.label(class="form-label fw-semibold") }}
+                    {{ form.comment(class="form-control rounded-3", rows="4", placeholder="Tell us you'r experience") }}
+                </div>
+
+                <!-- Submit -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow-sm">
+                        Submit Feedback
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+<!-- CSS for modern hover effects -->
+<style>
+.rating {
+    unicode-bidi: bidi-override; /* ensures correct ordering */
+}
+
+.rating .star {
+    color: #ddd;               /* unselected */
+    cursor: pointer;
+    font-size: 2rem;
+    transition: transform 0.2s, color 0.2s;
+}
+
+/* Highlight stars on hover */
+.rating .star:hover,
+.rating .star:hover ~ .star {
+    color: #ffc107;
+    transform: scale(1.2);
+}
+
+/* Highlight stars for checked input */
+.rating input:checked ~ .star {
+    color: #ffc107;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
 
 
 {% endblock %}

@@ -1,23 +1,25 @@
 {% from "macros.html" import is_active %}
 <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary shadow-sm">
     <div class="container">
-      <a class="navbar-brand" href="#">My Project</a>
-      <div class="collapse navbar-collapse">
-        <div class="navbar-nav">
+        <a class="navbar-brand" href="/">Kele</a>
+        <div class="collapse navbar-collapse">
+            <div class="navbar-nav">
 
-          <a class="nav-link {{ is_active('main.index') }}" href="/">Home</a>
-          <a class="nav-link {{ is_active('main.feedback') }}" href="/feedback">Feedback</a>
-          <a class="nav-link {{ is_active('auth.register') }}" href="/register">Register</a>
+                <a class="nav-link {{ is_active('auth.register') }}" href="/register">Register</a>
+                <a class="nav-link {{ is_active('main.feedback') }}" href="/feedback">Feedback</a>
+                <a class="nav-link {{ is_active('main.about') }}" href="/about">About</a>
+                <a class="nav-link {{ is_active('main.branches') }}" href="/branches">Branches</a>
+                <a class="nav-link {{ is_active('product.menu') }}" href="/menu">Menu</a>
 
+            </div>
         </div>
-      </div>
         <div class="d-flex btn-group">
-                {% if current_user.is_authenticated %}
-                    <a href="/logout" class="btn btn-success">Log Out</a>
-                {% else %}
-                    <a href="/login" class="btn btn-success">Log In</a>
-                    <a href="/register" class="btn btn-outline-success">Register</a>
-                {% endif %}
+            {% if current_user.is_authenticated %}
+            <a href="/logout" class="btn btn-success">Log Out</a>
+            {% else %}
+            <a href="/login" class="btn btn-success">Log In</a>
+            <a href="/register" class="btn btn-outline-success">Register</a>
+            {% endif %}
         </div>
     </div>
-  </nav>
+</nav>

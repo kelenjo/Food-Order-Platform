@@ -1,0 +1,23 @@
+{% extends "partials/base.html" %}
+{% block title %}Menu{% endblock %}
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Our Menu</h1>
+    <div class="row">
+        {% for item in products %}
+        <div class="col-md-4">
+            <div class="card mb-3 shadow-sm">
+                <img src="{{ url_for('static', filename='assets/' ~ item.image) }}"
+                     class="card-img-top" alt="{{ item.name }}">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">{{ item.description }}</p>
+                    <p class="fw-bold">${{ item.price }}</p>
+                    <a href="#" class="btn btn-success">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

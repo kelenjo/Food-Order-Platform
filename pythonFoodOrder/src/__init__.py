@@ -12,14 +12,10 @@ Blueprints = [product_blueprint, auth_blueprint, main_blueprint]
 Commands = [init_db_command, populate_db_command]
 
 
-def create_app(test_config=None):
+def create_app():
 
     app = Flask(__name__)
     app.config.from_object(Config)
-
-    # Then override with test config if passed
-    if test_config:
-        app.config.update(test_config)
 
     register_extensions(app)
     register_blueprints(app)
