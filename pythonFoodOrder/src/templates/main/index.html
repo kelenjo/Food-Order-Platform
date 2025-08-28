@@ -1,26 +1,84 @@
 {% extends "partials/base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-  <div class="container py-5">
-    <div class="bg-dark p-4 rounded mb-4 text-center">
-      <h1 class="bg-light">My Simple "Food Order" Web Application</h1>
-    </div>
-    <img src="/static/assets/shaurmisxorci.jfif" class="img-fluid rounded mb-4" alt="Main Shaurma">
 
-    <div class="bg-primary p-3 rounded mb-4 text-center">
-      <a href="/feedback" class="btn btn-light btn-lg">გაგვიზიარე შეფასება</a>
-    </div>
+<!-- Carousel (Best Offers / News Center) -->
+<div id="offersCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
 
-
-    <div class="bg-warning text-dark p-3 rounded">
-      <h3>ჩვენი ფილიალები</h3>
-      <ul class="list-group">
-        <li class="list-group-item">გლდანი, ა მიკრო</li>
-        <li class="list-group-item">გლანი, I მიკრო</li>
-        <li class="list-group-item">საბურთალო</li>
-      </ul>
+    <!-- Dynamic indicators -->
+    <div class="carousel-indicators">
+        {% for offer in offers %}
+        <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}"></button>
+        {% endfor %}
     </div>
 
-  </div>
+    <div class="carousel-inner rounded-4 shadow-lg">
+        {% for offer in offers %}
+        <div class="carousel-item {% if loop.first %}active{% endif %}">
+            <img src="{{ url_for('static', filename='assets/' + offer.image) }}" class="d-block w-100 carousel-img" alt="{{ offer.title }}">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-3">
+                <h5>{{ offer.title }}</h5>
+                <p>{{ offer.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+<!-- Quick Links Section -->
+<div class="container text-center my-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="{{ url_for('main.feedback') }}" class="text-decoration-none">
+                <div class="card shadow-lg rounded-4 border-0 h-100 hover-card">
+                    <div class="card-body">
+                        <h3 class="card-title">⭐ Feedback</h3>
+                        <p class="card-text">Tell us what you think and help us improve.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('main.about') }}" class="text-decoration-none">
+                <div class="card shadow-lg rounded-4 border-0 h-100 hover-card">
+                    <div class="card-body">
+                        <h3 class="card-title">ℹ️ About Us</h3>
+                        <p class="card-text">Learn more about our story and mission.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('product.menu') }}" class="text-decoration-none">
+                <div class="card shadow-lg rounded-4 border-0 h-100 hover-card">
+                    <div class="card-body">
+                        <h3 class="card-title">📜 Menu</h3>
+                        <p class="card-text">Explore our delicious food options.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Small CSS to add hover effect -->
+<style>
+  .hover-card:hover {
+    transform: scale(1.05);
+    transition: 0.3s ease;
+  }
+  .carousel-img {
+    height: 500px;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+</style>
 
 {% endblock %}

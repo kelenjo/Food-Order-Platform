@@ -3,6 +3,7 @@ import datetime
 import click
 from src.ext import db
 from src.models import Product, Person, IDcard, User
+from src.models.product import Offer
 
 
 def init_db():
@@ -67,10 +68,41 @@ def populate_db():
         }
     ]
 
+    offers = [
+        Offer(
+            title="🔥 30% Shok Aqcia",
+            description="Dzaan magari aqcia am yleobaze",
+            image="default_img.png",
+            active=True
+        ),
+        Offer(
+            title="🍔 Buy 1 Get 1 Free",
+            description="All burgers this week only!",
+            image="default_img.png",
+            active=True
+        ),
+        Offer(
+            title="🥗 Healthy Meals Discount",
+            description="Fresh salads and bowls at a special price.",
+            image="default_img.png",
+            active=True
+        ),
+        Offer(
+            title="🍕 Family Pizza Combo",
+            description="Get a family pizza combo with drinks at 25% off.",
+            image="default_img.png",
+            active=True
+        ),
+    ]
+
     for product in products:
         new_product = Product(name=product["name"], price=product["price"], description=product["description"],
                               image=product["image"])
         db.session.add(new_product)
+
+    for offer in offers:
+        db.session.add(offer)
+    db.session.commit()
 
     idcard = IDcard(serial_number="01201115242", expiry_data=datetime.datetime.now())
     db.session.add(idcard)
@@ -79,6 +111,7 @@ def populate_db():
     db.session.add(person)
     user = User("mari", "marikuna@gmail.com", "Mari123")
     db.session.add(user)
+
     db.session.commit()
 
 

@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from flask import Flask
 from src.admin_views.base import SecureModelView
 from src.admin_views import UserView, ProductView

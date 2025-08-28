@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from src.view.main.forms import FeedbackForm
-from src.models.product import Product
+from src.models.product import Offer
 
 main_blueprint = Blueprint("main", __name__)
 
 
 @main_blueprint.route("/")
 def index():
-    products = Product.query.all()
-    return render_template("main/index.html", products=products)
+    offers = Offer.query.filter_by(active=True).all()
+    return render_template("main/index.html", offers=offers)
 
 
 @main_blueprint.route("/about")
