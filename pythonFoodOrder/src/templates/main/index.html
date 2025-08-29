@@ -8,14 +8,16 @@
     <!-- Dynamic indicators -->
     <div class="carousel-indicators">
         {% for offer in offers %}
-        <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}"></button>
+        <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="{{ loop.index0 }}"
+                class="{% if loop.first %}active{% endif %}"></button>
         {% endfor %}
     </div>
 
     <div class="carousel-inner rounded-4 shadow-lg">
         {% for offer in offers %}
         <div class="carousel-item {% if loop.first %}active{% endif %}">
-            <img src="{{ url_for('static', filename='assets/' + offer.image) }}" class="d-block w-100 carousel-img" alt="{{ offer.title }}">
+            <img src="{{ url_for('static', filename='assets/' + offer.image) }}" class="d-block w-100 carousel-img"
+                 alt="{{ offer.title }}">
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-3">
                 <h5>{{ offer.title }}</h5>
                 <p>{{ offer.description }}</p>
@@ -33,40 +35,56 @@
 </div>
 
 <!-- Quick Links Section -->
-<div class="container text-center my-5">
-    <div class="row g-4">
-        <div class="col-md-4">
-            <a href="{{ url_for('main.feedback') }}" class="text-decoration-none">
-                <div class="card shadow-lg rounded-4 border-0 h-100 hover-card">
-                    <div class="card-body">
-                        <h3 class="card-title">⭐ Feedback</h3>
-                        <p class="card-text">Tell us what you think and help us improve.</p>
-                    </div>
-                </div>
-            </a>
+<div class="container my-5">
+
+    <!-- Menu Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="Menu">
         </div>
-        <div class="col-md-4">
-            <a href="{{ url_for('main.about') }}" class="text-decoration-none">
-                <div class="card shadow-lg rounded-4 border-0 h-100 hover-card">
-                    <div class="card-body">
-                        <h3 class="card-title">ℹ️ About Us</h3>
-                        <p class="card-text">Learn more about our story and mission.</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-4">
-            <a href="{{ url_for('product.menu') }}" class="text-decoration-none">
-                <div class="card shadow-lg rounded-4 border-0 h-100 hover-card">
-                    <div class="card-body">
-                        <h3 class="card-title">📜 Menu</h3>
-                        <p class="card-text">Explore our delicious food options.</p>
-                    </div>
-                </div>
-            </a>
+        <div class="col-md-6">
+            <h2>Our Menu</h2>
+            <p>
+                Explore a variety of dishes, from local specialties to international
+                favorites. Whether dining in or ordering online, satisfaction is guaranteed.
+            </p>
+            <a href="/menu" class="btn btn-dark">See Menu</a>
         </div>
     </div>
+
+    <!-- About Section -->
+    <div class="row align-items-center mb-5 flex-md-row-reverse">
+        <div class="col-md-6">
+            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="About Us">
+        </div>
+        <div class="col-md-6">
+            <h2>About Us</h2>
+            <p>
+                We bring delicious flavors to your table with love and passion.
+                At YourRestaurant, every dish is crafted with fresh ingredients
+                and authentic recipes.
+            </p>
+            <a href="/about" class="btn btn-dark">Learn More</a>
+        </div>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="Feedback">
+        </div>
+        <div class="col-md-6">
+            <h2>Customer Feedback</h2>
+            <p>
+                Our customers love us! Read their stories and share your own
+                dining experience with YourRestaurant.
+            </p>
+            <a href="/feedback" class="btn btn-dark">Rate Us</a>
+        </div>
+    </div>
+
 </div>
+
 
 <!-- Small CSS to add hover effect -->
 <style>
@@ -79,6 +97,7 @@
     object-fit: cover;
     border-radius: 1rem;
   }
+
 </style>
 
 {% endblock %}

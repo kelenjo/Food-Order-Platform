@@ -1,16 +1,19 @@
 from flask import Blueprint, render_template
-from src.models.product import Product
+from src.models.product import Product, Category
 
 product_blueprint = Blueprint("product", __name__)
 
 
 @product_blueprint.route("/menu")
 def menu():
+    categories = Category.query.all()
+
     products = Product.query.all()
-    return render_template("product/menu.html", products=products)
+
+    return render_template("product/menu.html", categories=categories, products=products)
 
 
-@product_blueprint.route("/view/<int:product_id>")
+@product_blueprint.route("/product/<int:product_id>")
 def view(product_id):
     product = Product.query.get(product_id)
     print(product)

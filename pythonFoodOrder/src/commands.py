@@ -3,7 +3,7 @@ import datetime
 import click
 from src.ext import db
 from src.models import Product, Person, IDcard, User
-from src.models.product import Offer
+from src.models.product import Offer, Category
 
 
 def init_db():
@@ -29,42 +29,48 @@ def populate_db():
             "name": "შაურმა პატარა",
             "price": 11,
             "image": "shaurma.jfif",
-            "description": "ლავაში, ღორის ხორცი 200გ, პომიდორი, ხახვი, სალათის ფურცელი(აისბერგი), წიწაკა, მაიონეზი, კეტჩუპი"
+            "description": "ლავაში, ღორის ხორცი 200გ, პომიდორი, ხახვი, სალათის ფურცელი(აისბერგი), წიწაკა, მაიონეზი, კეტჩუპი",
+            "category_id": 1
         },
         {
             "id": 1,
             "name": "შაურმა სტანდარტი",
             "price": 13,
             "image": "shaurma.jfif",
-            "description": "ლავაში, ღორის ხორცი 250გ, პომიდორი, ხახვი, სალათის ფურცელი(აისბერგი), წიწაკა, მაიონეზი, კეტჩუპი"
+            "description": "ლავაში, ღორის ხორცი 250გ, პომიდორი, ხახვი, სალათის ფურცელი(აისბერგი), წიწაკა, მაიონეზი, კეტჩუპი",
+            "category_id": 1
         },
         {
             "id": 2,
             "name": "შაურმა დიდი",
             "price": 18,
             "image": "shaurma.jfif",
-            "description": "ლავაში, ღორის ხორცი 300გ, პომიდორი, ხახვი, სალათის ფურცელი(აისბერგი), წიწაკა, მაიონეზი, კეტჩუპი"
+            "description": "ლავაში, ღორის ხორცი 300გ, პომიდორი, ხახვი, სალათის ფურცელი(აისბერგი), წიწაკა, მაიონეზი, კეტჩუპი",
+            "category_id": 1
         },
         {
             "id": 3,
             "name": "კოლა",
             "price": 3,
             "image": "cola.jfif",
-            "description": "ცივი გაზიანი სასმელი, კოკა-კოლა 500მლ"
+            "description": "ცივი გაზიანი სასმელი, კოკა-კოლა 500მლ",
+            "category_id": 2
         },
         {
             "id": 4,
             "name": "სპრაიტი",
             "price": 3,
             "image": "sprite.jfif",
-            "description": "ცივი გაზიანი სასმელი, სპრაიტი 500მლ"
+            "description": "ცივი გაზიანი სასმელი, სპრაიტი 500მლ",
+            "category_id": 2
         },
         {
             "id": 5,
             "name": "ბურგერი",
             "price": 10,
             "image": "burger.png",
-            "description": "ბურგერის ბული, ღორის ხორცი 200გ, ყველი, პომიდორი, სალათის ფურცელი, კეტჩუპი, მაიონეზი"
+            "description": "ბურგერის ბული, ღორის ხორცი 200გ, ყველი, პომიდორი, სალათის ფურცელი, კეტჩუპი, მაიონეზი",
+            "category_id": 3
         }
     ]
 
@@ -95,9 +101,18 @@ def populate_db():
         ),
     ]
 
+    categories = [
+        Category(name="Shaurma"),
+        Category(name="Drinks"),
+        Category(name="Burgers")
+    ]
+
+    db.session.add_all(categories)
+    db.session.commit()
+
     for product in products:
         new_product = Product(name=product["name"], price=product["price"], description=product["description"],
-                              image=product["image"])
+                              image=product["image"], category_id=product["category_id"])
         db.session.add(new_product)
 
     for offer in offers:

@@ -1,13 +1,96 @@
 {% extends "partials/base.html" %}
 {% block title %}About Us{% endblock %}
 {% block body %}
-<div class="container mt-4">
-    <h1 class="mb-4 text-center">About Us</h1>
-    <p class="lead text-center">
-        Welcome to <strong>Kelenjo</strong>! We are passionate about delivering the best food experience.
-    </p>
-    <p class="text-center">
-        Our mission is to serve fresh, delicious meals right to your doorstep.
-    </p>
+
+<div class="position-relative text-center text-white mb-5" style="margin-top: 40px;">
+  <!-- Background Image -->
+  <img src="{{ url_for('static', filename='assets/kele_logo.jpg') }}"
+       class="img-fluid w-100"
+       alt="About Banner"
+       style="object-fit: cover; height: 460px;">
+
+  <!-- Dark Overlay -->
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0,0,0,0.5);"></div>
+
+  <!-- Text Content -->
+  <div class="position-absolute top-50 start-50 translate-middle">
+    <h1 class="display-4 fw-bold">About Kelenjo</h1>
+    <p class="lead">Bringing flavors to life since 2010</p>
+  </div>
 </div>
+
+
+
+<!-- History Section -->
+<div class="container mb-5">
+  <div class="row align-items-center mb-4">
+    <div class="col-md-6">
+      <img src="https://via.placeholder.com/500x350" class="img-fluid rounded shadow" alt="Our Beginnings">
+    </div>
+    <div class="col-md-6">
+      <h2>Our Story</h2>
+      <p>
+        Kelenjo started as a small family restaurant in Tbilisi,
+        with a simple idea: serve fresh and authentic meals
+        made with love. Over the years, we’ve grown into a
+        community favorite, known for blending tradition with modern taste.
+      </p>
+    </div>
+  </div>
+
+  <div class="row align-items-center flex-md-row-reverse">
+    <div class="col-md-6">
+      <img src="https://via.placeholder.com/500x350" class="img-fluid rounded shadow" alt="Growth">
+    </div>
+    <div class="col-md-6">
+      <h2>Our Growth</h2>
+      <p>
+        From our humble beginnings, we’ve expanded our menu and services,
+        embracing innovation while staying true to our roots.
+        Today, Kelenjo offers dine-in, delivery, and catering for special events.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Team Section -->
+<div class="bg-light py-5">
+  <div class="container text-center">
+    <h2 class="mb-4">Meet Our Team</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <img src="https://via.placeholder.com/200" class="rounded-circle mb-3 shadow" alt="Chef 1">
+        <h5>Chef Nino</h5>
+        <p class="text-muted">Head Chef</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <img src="https://via.placeholder.com/200" class="rounded-circle mb-3 shadow" alt="Chef 2">
+        <h5>Chef Lasha</h5>
+        <p class="text-muted">Pastry Specialist</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <img src="https://via.placeholder.com/200" class="rounded-circle mb-3 shadow" alt="Chef 3">
+        <h5>Chef Mari</h5>
+        <p class="text-muted">Creative Dishes</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery Section -->
+<div class="container my-5">
+  <h2 class="text-center mb-4">A Glimpse of Kelenjo</h2>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow" alt="Gallery 1">
+    </div>
+    <div class="col-md-4">
+      <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow" alt="Gallery 2">
+    </div>
+    <div class="col-md-4">
+      <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow" alt="Gallery 3">
+    </div>
+  </div>
+</div>
+
 {% endblock %}

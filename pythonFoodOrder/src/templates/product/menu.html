@@ -2,22 +2,73 @@
 {% block title %}Menu{% endblock %}
 {% block body %}
 <div class="container mt-4">
-    <h1 class="mb-4 text-center">Our Menu</h1>
+    <h1 class="mb-5 text-center">Our Menu</h1>
     <div class="row">
-        {% for item in products %}
-        <div class="col-md-4">
-            <div class="card mb-3 shadow-sm">
-                <img src="{{ url_for('static', filename='assets/' ~ item.image) }}"
-                     class="card-img-top" alt="{{ item.name }}">
-                <div class="card-body text-center">
-                    <h5 class="card-title">{{ item.name }}</h5>
-                    <p class="card-text">{{ item.description }}</p>
-                    <p class="fw-bold">${{ item.price }}</p>
-                    <a href="#" class="btn btn-success">Add to Cart</a>
-                </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-3 mb-4 pe-4">
+            <div class="list-group shadow-sm sticky-top" style="top: 80px;">
+                {% for category in categories %}
+                <a href="#{{ category|replace(' ', '_') }}"
+                   class="list-group-item list-group-item-action">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Main Content (Products) -->
+        <div class="col-md-9 ps-4">
+            {% for category in categories %}
+            <section id="{{ category|replace(' ', '_') }}" class="mb-5">
+                <h2 class="mb-4 fw-bold display-5 border-bottom pb-2">{{ category.name }}</h2>
+                <div class="row g-4">
+                    {% for item in products if item.category_id == category.id %}
+                    <div class="col-md-4">
+                        <a href="product/{{item.id}}" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-lg border-0 product-card">
+                                <img src="{{ url_for('static', filename='assets/' ~ item.image) }}"
+                                     class="card-img-top" alt="{{ item.name }}"
+                                     style="height: 250px; object-fit: cover;">
+                                <div class="card-body text-center">
+                                    <h4 class="card-title fw-bold">{{ item.name }}</h4>
+                                    <p class="card-text fs-6 text-muted">{{ item.description }}</p>
+                                    <p class="fw-bold fs-4 text-success">${{ item.price }}</p>
+                                    <a href="#" class="btn btn-lg btn-success px-4">Add to Cart</a>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+        </div>
     </div>
 </div>
+
+<!-- Smooth Scroll -->
+<script>
+document.querySelectorAll('.list-group a').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+<!-- Card Hover Effect -->
+<style>
+.product-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+</style>
+
 {% endblock %}
