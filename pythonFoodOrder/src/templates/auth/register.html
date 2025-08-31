@@ -2,49 +2,47 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-
-
-<div class="container d-flex justify-content-center py-5">
-    <div class="card shadow-lg border-0" style="max-width: 500px; width: 100%; background: #ffffff;">
+<div class="d-flex align-items-center justify-content-center"
+     style="min-height: 80vh; background: linear-gradient(135deg, #FFDEE9, #B5FFFC);">
+    <div class="card shadow-lg border-0 rounded-4"
+         style="max-width: 500px; width: 100%;">
         <div class="card-body p-5">
-            <h2 class="mb-4 fw-bold text-center">Create Your Account</h2>
-            <form method="post">
-                {% for errors in form.errors.values() %}
-                {% for error in errors %}
-                <p class="text-danger">*{{ error }}</p>
-                {% endfor %}
-                {% endfor %}
+            <h2 class="text-center fw-bold mb-4" style="font-size: 2rem;">Create Your Account ✨</h2>
+            <form method="POST">
                 {{ form.hidden_tag() }}
-                <div class="mb-3">
-                    {{ form.username(placeholder=form.username.label.text, class="form-control") }}
+                {% for errors in form.errors.values() %}
+                    {% for error in errors %}
+                        <p class="text-danger small" style="font-size: 0.95rem;">* {{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+
+                <!-- Username -->
+                <div class="mb-3 position-relative">
+                    {{ form.username(placeholder="Username", class="form-control ps-5 shadow-sm rounded-3", style="font-size: 1.1rem;") }}
+                    <i class="bi bi-person position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                 </div>
-                <div class="mb-3">
-                    {{ form.email(placeholder=form.email.label.text, class="form-control") }}
+
+                <!-- Email -->
+                <div class="mb-3 position-relative">
+                    {{ form.email(placeholder="Email", class="form-control ps-5 shadow-sm rounded-3", style="font-size: 1.1rem;") }}
+                    <i class="bi bi-envelope position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                 </div>
-                <div class="mb-3">
-                    {{ form.password(placeholder=form.password.label.text, class="form-control") }}
+
+                <!-- Password -->
+                <div class="mb-3 position-relative">
+                    {{ form.password(placeholder="Password", class="form-control ps-5 shadow-sm rounded-3", style="font-size: 1.1rem;") }}
+                    <i class="bi bi-lock position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                 </div>
+
                 <div class="d-grid">
-                    {{ form.submit(class="btn btn-primary") }}
+                    {{ form.submit(class="btn btn-success rounded-3 fw-bold shadow-sm py-2") }}
                 </div>
             </form>
+            <p class="text-center mt-4 small" style="font-size: 0.95rem;">
+                Already have an account?
+                <a href="{{ url_for('auth.login') }}" class="fw-semibold text-decoration-none">Login</a>
+            </p>
         </div>
     </div>
 </div>
-<script
-        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"
-></script>
-<script
-        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"
-></script>
-<script
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"
-></script>
-
 {% endblock %}
