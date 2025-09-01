@@ -12,6 +12,9 @@ class User(BaseModel, UserMixin):
     email = db.Column(db.String, unique=True)
     _password = db.Column(db.String)
 
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False, default=2)
+    roles = db.relationship('Role', back_populates="users")
+
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
@@ -35,4 +38,18 @@ class User(BaseModel, UserMixin):
     @password.setter
     def password(self, password):
         self._password = generate_password_hash(password)
+
+
+class Role(BaseModel):
+
+    __tablename__ = "roles"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+
+    users = db.relationship('User', back_populates="roles")
+
+
+
+
+
 
