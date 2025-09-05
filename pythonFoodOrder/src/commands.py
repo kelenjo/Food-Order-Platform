@@ -107,7 +107,7 @@ def populate_db():
     ]
 
     roles = [
-        Role(name="admin"),
+        Role(name="Admin"),
         Role(name="User")
     ]
 

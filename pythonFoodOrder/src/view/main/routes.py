@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from src.view.main.forms import FeedbackForm
 from src.models.product import Offer
-from src.models import Role, User
 
 main_blueprint = Blueprint("main", __name__)
 

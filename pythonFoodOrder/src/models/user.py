@@ -12,8 +12,7 @@ class User(BaseModel, UserMixin):
     email = db.Column(db.String, unique=True)
     _password = db.Column(db.String)
 
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False, default=2)
-    roles = db.relationship('Role', back_populates="users")
+    roles = db.relationship('Role', secondary="user_role", back_populates="users")
 
     def __init__(self, username, email, password):
         self.username = username
@@ -40,13 +39,22 @@ class User(BaseModel, UserMixin):
         self._password = generate_password_hash(password)
 
 
+class UserRole(BaseModel):
+
+    __tablename__ = "user_role"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
+
+
 class Role(BaseModel):
 
     __tablename__ = "roles"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
 
-    users = db.relationship('User', back_populates="roles")
+    users = db.relationship('User', secondary="user_role", back_populates="roles")
 
 
 

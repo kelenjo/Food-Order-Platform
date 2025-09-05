@@ -46,7 +46,7 @@ def register_extensions(app):
 
     # Flask-Admin
     admin.init_app(app)
-    admin.add_view(UserView(User, db.session))
+    admin.add_view(UserView(User, db.session, endpoint="user_admin"))
     admin.add_view(ProductView(Product, db.session, endpoint="product_admin"))
 
     admin.add_link(MenuLink("Back To Site", url="/", icon_type="fa", icon_value="fa-sing-out"))
