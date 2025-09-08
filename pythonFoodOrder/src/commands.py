@@ -2,7 +2,7 @@ from flask.cli import with_appcontext
 import datetime
 import click
 from src.ext import db
-from src.models import Product, Person, IDcard, User, Role, Offer, Category
+from src.models import Product, Person, IDcard, User, Role, Offer, Category, UserRole
 
 
 def init_db():
@@ -133,6 +133,9 @@ def populate_db():
     db.session.add(person)
     user = User("mari", "marikuna@gmail.com", "Mari123")
     db.session.add(user)
+
+    user_role = UserRole(user_id=user.id, role_id=2)
+    db.session.add(user_role)
 
     db.session.commit()
 

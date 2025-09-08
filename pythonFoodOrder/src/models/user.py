@@ -38,6 +38,19 @@ class User(BaseModel, UserMixin):
     def password(self, password):
         self._password = generate_password_hash(password)
 
+    @property
+    def get_roles(self):
+        return [user_role for user_role in self.roles]
+
+    def has_role(self, role_name: str):
+        for user_role in self.get_roles:
+            if user_role.name == role_name:
+                return True
+        return False
+
+    def get_role_names(self):
+        return [user_role.name for user_role in self.get_roles]
+
 
 class UserRole(BaseModel):
 

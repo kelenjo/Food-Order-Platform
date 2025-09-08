@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from src.view.auth.forms import RegisterForm, LoginForm
-from src.models import User
+from src.models import User, UserRole, Role
 from flask_login import login_user, logout_user, login_required
 
 
@@ -18,7 +18,10 @@ def register():
         print('ar xar')
         user = User(form.username.data, form.email.data, form.password.data)
         user.create()
-        # return render_template('index.html')
+        default_role = Role.query.filter_by(name="User").first()
+        user_role = UserRole(user_id=user.id, role_id=default_role.id)
+        user_role.create()
+        return render_template('main/index.html')
     else:
         print('bad xar1')
         print(form.errors)
