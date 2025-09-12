@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request, abort
+from flask import Blueprint, render_template, flash, redirect, url_for, request
 from src.view.auth.forms import RegisterForm, LoginForm
 from src.models import User, UserRole, Role
-from flask_login import login_user, logout_user, login_required, current_user
-from src.utils import roles_required
+from flask_login import login_user, logout_user, login_required
 
 
 auth_blueprint = Blueprint("auth", __name__)

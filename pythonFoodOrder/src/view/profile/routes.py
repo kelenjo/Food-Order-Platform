@@ -31,7 +31,7 @@ def edit(user_id=None):
     form = RegisterForm(username=user.username, email=user.email, password=user.password)
 
     if form.validate_on_submit():
-        user.edit(form)  # assuming you wrote .edit() method
+        user.edit(form)
         user.save()
         print(f"{oldname} has changed its name to {user.username}")
 
@@ -59,10 +59,16 @@ def delete(user_id):
 def edit_username():
     form = EditUsernameForm(username=current_user.username)
     if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.save()
-        flash("Username updated!", "success")
-        return redirect(url_for("profile.profile"))
+        new_name = form.username.data
+
+        if User.query.filter_by(username=new_name).first() is not None and new_name != current_user.username:
+            flash("Username is already taken!", "danger")
+        else:
+            current_user.username = new_name
+            current_user.save()
+            flash("Username updated!", "success")
+            return redirect(url_for("profile.profile"))
+
     return render_template("profile/edit_username.html", form=form)
 
 

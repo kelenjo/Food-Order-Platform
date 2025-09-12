@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, length, ValidationError
+from wtforms.validators import DataRequired, length, ValidationError, EqualTo
 from string import ascii_lowercase, ascii_uppercase, digits
 
 
@@ -12,30 +12,25 @@ class EditUsernameForm(FlaskForm):
 
 
 class ChangePasswordForm(FlaskForm):
-
-    current_password = PasswordField("Enter Old password")
-    new_password = PasswordField("Enter New password", validators=[DataRequired()])
-    confirm_new_password = PasswordField("Enter New password", validators=[DataRequired()])
-
+    current_password = PasswordField("Enter Old password", validators=[DataRequired()])
+    new_password = PasswordField(
+        "Enter New password",
+        validators=[DataRequired(), EqualTo('confirm_new_password', message="Passwords must match")]
+    )
+    confirm_new_password = PasswordField("Confirm New password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
     def validate_new_password(self, field):
-        contains_upcase = False
-        contains_lowcase = False
-        contains_digits = False
+        errors = []
 
-        for char in field.data:
-            if char in ascii_uppercase:
-                contains_upcase = True
-            if char in ascii_lowercase:
-                contains_lowcase = True
-            if char in digits:
-                contains_digits = True
+        if not any(c in ascii_uppercase for c in field.data):
+            errors.append("Password must contain at least one uppercase letter")
+        if not any(c in ascii_lowercase for c in field.data):
+            errors.append("Password must contain at least one lowercase letter")
+        if not any(c in digits for c in field.data):
+            errors.append("Password must contain at least one digit")
 
-        if contains_upcase == False:
-            raise ValidationError("Password must contain UpperCase Letter")
-        if contains_lowcase == False:
-            raise ValidationError("Password must contain LowerCase Letter")
-        if contains_digits == False:
-            raise ValidationError("Password must contain Digits Letter")
+        if errors:
+            raise ValidationError(errors)
+
 
