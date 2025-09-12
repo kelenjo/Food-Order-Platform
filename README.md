@@ -1,4 +1,4 @@
-Kelenjo Food Ordering Web Appppp
+Kelenjo Food Ordering Web Appppppppppp
 
 • Description: Modern, responsive food ordering web app for a single company, built with Flask and Bootstrap 5.
 
