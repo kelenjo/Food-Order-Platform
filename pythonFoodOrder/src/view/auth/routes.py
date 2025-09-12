@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask import Blueprint, render_template, flash, redirect, url_for, request, abort
 from src.view.auth.forms import RegisterForm, LoginForm
 from src.models import User, UserRole, Role
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
+from src.utils import roles_required
 
 
 auth_blueprint = Blueprint("auth", __name__)
@@ -55,27 +56,3 @@ def logout():
     logout_user()
     return redirect(url_for("main.index"))
 
-
-@auth_blueprint.route("/edit/<int:user_id>", methods=['GET', 'POST'])
-@login_required
-def edit(user_id):
-    user = User.query.get(user_id)
-    oldname = user.username
-    form = RegisterForm(username=user.username, email=user.email, password=user.password)
-    if form.validate_on_submit():
-        user.edit(form)
-        print(f"{oldname} has changed it own name to {user.username}")
-    else:
-        print(form.errors)
-    return render_template("auth/register.html", form=form)
-
-
-@auth_blueprint.route("/delete/<int:user_id>")
-@login_required
-def delete(user_id):
-    usertodel = User.query.get(user_id)
-    # User.query.filter_by()
-    print(usertodel)
-    usertodel.delete()
-    print(url_for("main.index"))
-    return redirect(url_for("main.index"))

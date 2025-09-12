@@ -131,11 +131,15 @@ def populate_db():
     db.session.commit()
     person = Person(name="Giorgi", surname="Kelenjeridze", birthday=datetime.datetime.now(), idcard_id=idcard.id)
     db.session.add(person)
-    user = User("mari", "marikuna@gmail.com", "Mari123")
+    user = User("gio", "giorgigioroblox13@gmail.com", "Gio123")
+    user1 = User("mari", "marikuna@gmail.com", "Mari123")
     db.session.add(user)
+    db.session.add(user1)
 
-    user_role = UserRole(user_id=user.id, role_id=2)
+    user_role = UserRole(user_id=User.query.filter_by(username="gio").first().id, role_id=Role.query.filter_by(name="Admin").first().id)
+    user_role1 = UserRole(user_id=User.query.filter_by(username="mari").first().id, role_id=Role.query.filter_by(name="User").first().id)
     db.session.add(user_role)
+    db.session.add(user_role1)
 
     db.session.commit()
 

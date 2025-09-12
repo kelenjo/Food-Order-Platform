@@ -7,12 +7,12 @@ from src.admin_views.base import SecureModelView
 from src.admin_views import UserView, ProductView
 from src.config import Config
 from src.ext import db, migrate, login_manager, admin
-from src.view import product_blueprint, auth_blueprint, main_blueprint
+from src.view import product_blueprint, auth_blueprint, main_blueprint, profile_blueprint
 from src.commands import init_db_command, populate_db_command
 from src.models import User, Product
 from flask_admin.menu import MenuLink
 
-Blueprints = [product_blueprint, auth_blueprint, main_blueprint]
+Blueprints = [product_blueprint, auth_blueprint, main_blueprint, profile_blueprint]
 Commands = [init_db_command, populate_db_command]
 
 
@@ -38,7 +38,7 @@ def register_extensions(app):
 
     # Flask-LoginManager
     login_manager.init_app(app)
-    login_manager.login_view = 'user.login'
+    login_manager.login_view = 'auth.login'
 
     @login_manager.user_loader
     def load_user(_id):

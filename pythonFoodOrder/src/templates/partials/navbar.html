@@ -1,22 +1,28 @@
 {% from "macros.html" import is_active %}
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary shadow-sm" style="min-height: 70px;">
     <div class="container">
-        <a class="navbar-brand" href="/">Kele</a>
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold fs-4" href="/">Kele</a>
+
+        <!-- Navbar links -->
         <div class="collapse navbar-collapse">
-            <div class="navbar-nav">
-
-                <a class="nav-link {{ is_active('main.about') }}" href="/about">About</a>
-                <a class="nav-link {{ is_active('main.branches') }}" href="/branches">Branches</a>
-                <a class="nav-link {{ is_active('product.menu') }}" href="/menu">Menu</a>
-
+            <div class="navbar-nav me-auto">
+                <a class="nav-link {{ is_active('main.about') }} fs-5 px-3" href="/about">About</a>
+                <a class="nav-link {{ is_active('main.branches') }} fs-5 px-3" href="/branches">Branches</a>
+                <a class="nav-link {{ is_active('product.menu') }} fs-5 px-3" href="/menu">Menu</a>
             </div>
         </div>
-        <div class="d-flex btn-group">
+
+        <!-- Right side buttons -->
+        <div class="d-flex align-items-center">
             {% if current_user.is_authenticated %}
-            <a href="/logout" class="btn btn-success">Log Out</a>
+                <a href="{{ url_for('profile.profile') }}" class="btn btn-success d-flex align-items-center px-3">
+                    <i class="bi bi-person-circle me-2 fs-5"></i>
+                    {{ current_user.username }}
+                </a>
             {% else %}
-            <a href="/login" class="btn btn-success">Log In</a>
-            <a href="/register" class="btn btn-outline-success">Register</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-success me-2 px-4">Log In</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-success px-4">Register</a>
             {% endif %}
         </div>
     </div>
