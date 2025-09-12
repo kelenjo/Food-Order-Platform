@@ -1,0 +1,22 @@
+{% extends "partials/base.html" %}
+{% block title %}Edit Username{% endblock %}
+
+{% block body %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 80vh; background: #f0f2f5;">
+    <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 450px; width: 100%;">
+        <h2 class="text-center fw-bold mb-4">Edit Username ✏️</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.username(class="form-control", placeholder="New Username") }}
+            </div>
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-success fw-bold") }}
+            </div>
+        </form>
+        <p class="text-center mt-3 small">
+            <a href="{{ url_for('profile.profile') }}" class="text-decoration-none">Back to Profile</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
