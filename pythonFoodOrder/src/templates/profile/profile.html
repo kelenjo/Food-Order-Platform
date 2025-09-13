@@ -36,10 +36,30 @@
 
         <!-- Log Out Button -->
         <div class="d-grid mt-3">
-            <a href="{{ url_for('auth.logout') }}" class="btn btn-danger fw-bold">
+            <button type="button" class="btn btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="bi bi-box-arrow-right me-2"></i> Log Out
-            </a>
+            </button>
         </div>
     </div>
 </div>
+
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold" id="logoutModalLabel">Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to log out?
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger rounded-3">Log Out</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

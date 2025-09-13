@@ -21,6 +21,9 @@ class ChangePasswordForm(FlaskForm):
     submit = SubmitField("Submit")
 
     def validate_new_password(self, field):
+        if field.data is None:
+            return  # let DataRequired handle this
+
         errors = []
 
         if not any(c in ascii_uppercase for c in field.data):
@@ -30,7 +33,12 @@ class ChangePasswordForm(FlaskForm):
         if not any(c in digits for c in field.data):
             errors.append("Password must contain at least one digit")
 
+        # Instead of raising list → extend field.errors
         if errors:
-            raise ValidationError(errors)
+            for err in errors:
+                field.errors.append(err)
+            raise ValidationError("")  # raise dummy error so WTForms knows it failed
+
+
 
 

@@ -4,8 +4,7 @@
 {% block body %}
 <div class="d-flex align-items-center justify-content-center"
      style="min-height: 80vh; background: linear-gradient(135deg, #74ebd5, #ACB6E5);">
-    <div class="card shadow-lg border-0 rounded-4"
-         style="max-width: 450px; width: 100%;">
+    <div class="card shadow-lg border-0 rounded-4" style="max-width: 450px; width: 100%;">
         <div class="card-body p-5">
             <h2 class="text-center fw-bold mb-4" style="font-size: 2rem;">Welcome Back 👋</h2>
             <form method="POST" class="needs-validation">
@@ -13,15 +12,25 @@
 
                 <!-- Username -->
                 <div class="mb-3 position-relative">
-                    {{ form.username(placeholder="Username", class="form-control ps-5 shadow-sm rounded-3", style="font-size: 1.1rem;") }}
+                    {{ form.username(placeholder="Username", class="form-control ps-5 shadow-sm rounded-3",
+                    style="font-size: 1.1rem;") }}
                     <i class="bi bi-person position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                 </div>
 
                 <!-- Password -->
                 <div class="mb-3 position-relative">
-                    {{ form.password(placeholder="Password", class="form-control ps-5 shadow-sm rounded-3", style="font-size: 1.1rem;") }}
-                    <i class="bi bi-lock position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                    <div class="input-group">
+        <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-lock text-muted"></i>
+        </span>
+                        {{ form.password(class="form-control border-start-0 shadow-sm rounded-3",
+                        placeholder="Password", id="loginPassword") }}
+                        <button type="button" class="btn btn-outline-secondary" id="toggleLoginPassword">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
                 </div>
+
 
                 <div class="d-grid">
                     {{ form.submit(class="btn btn-primary rounded-3 fw-bold shadow-sm py-2") }}
@@ -34,4 +43,25 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const toggleBtn = document.getElementById("toggleLoginPassword");
+    const passwordField = document.getElementById("loginPassword");
+    const icon = toggleBtn.querySelector("i");
+
+    toggleBtn.addEventListener("click", () => {
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            passwordField.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    });
+});
+
+</script>
 {% endblock %}

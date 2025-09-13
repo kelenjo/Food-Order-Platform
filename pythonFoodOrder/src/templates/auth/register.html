@@ -11,28 +11,39 @@
             <form method="POST">
                 {{ form.hidden_tag() }}
                 {% for errors in form.errors.values() %}
-                    {% for error in errors %}
-                        <p class="text-danger small" style="font-size: 0.95rem;">* {{ error }}</p>
-                    {% endfor %}
+                {% for error in errors %}
+                <p class="text-danger small" style="font-size: 0.95rem;">* {{ error }}</p>
+                {% endfor %}
                 {% endfor %}
 
                 <!-- Username -->
                 <div class="mb-3 position-relative">
-                    {{ form.username(placeholder="Username", class="form-control ps-5 shadow-sm rounded-3", style="font-size: 1.1rem;") }}
+                    {{ form.username(placeholder="Username", class="form-control ps-5 shadow-sm rounded-3",
+                    style="font-size: 1.1rem;") }}
                     <i class="bi bi-person position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                 </div>
 
                 <!-- Email -->
                 <div class="mb-3 position-relative">
-                    {{ form.email(placeholder="Email", class="form-control ps-5 shadow-sm rounded-3", style="font-size: 1.1rem;") }}
+                    {{ form.email(placeholder="Email", class="form-control ps-5 shadow-sm rounded-3", style="font-size:
+                    1.1rem;") }}
                     <i class="bi bi-envelope position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                 </div>
 
                 <!-- Password -->
                 <div class="mb-3 position-relative">
-                    {{ form.password(placeholder="Password", class="form-control ps-5 shadow-sm rounded-3", style="font-size: 1.1rem;") }}
-                    <i class="bi bi-lock position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-lock text-muted"></i>
+                        </span>
+                        {{ form.password(class="form-control border-start-0 shadow-sm rounded-3",
+                        placeholder="Password", id="Password") }}
+                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
                 </div>
+
 
                 <div class="d-grid">
                     {{ form.submit(class="btn btn-success rounded-3 fw-bold shadow-sm py-2") }}
@@ -45,4 +56,25 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const toggleBtn = document.getElementById("togglePassword");
+    const passwordField = document.getElementById("Password");
+    const icon = toggleBtn.querySelector("i");
+
+    toggleBtn.addEventListener("click", () => {
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            passwordField.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    });
+});
+
+</script>
 {% endblock %}
