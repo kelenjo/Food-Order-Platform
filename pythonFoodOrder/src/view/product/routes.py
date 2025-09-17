@@ -72,3 +72,13 @@ def view(product_id):
     product = Product.query.get(product_id)
     print(product)
     return render_template("product/view_product.html", product=product)
+
+
+@product_blueprint.context_processor
+def cart_context():
+    if current_user.is_authenticated:
+        cart_items = Cart.query.filter_by(user_id=current_user.id).all()
+        cart_count = sum(item.quantity for item in cart_items)
+    else:
+        cart_count = 0
+    return dict(cart_count=cart_count)

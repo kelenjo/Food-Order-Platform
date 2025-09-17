@@ -2,7 +2,7 @@ from flask.cli import with_appcontext
 import datetime
 import click
 from src.ext import db
-from src.models import Product, Person, IDcard, User, Role, Offer, Category, UserRole
+from src.models import Product, Person, IDcard, User, Role, Offer, Category, UserRole, Cart
 
 
 def init_db():
@@ -140,6 +140,11 @@ def populate_db():
     user_role1 = UserRole(user_id=User.query.filter_by(username="mari").first().id, role_id=Role.query.filter_by(name="User").first().id)
     db.session.add(user_role)
     db.session.add(user_role1)
+
+    cart_item1 = Cart(user_id=User.query.filter_by(username="gio").first().id, product_id=Product.query.filter_by(name="კოლა").first().id, quantity=2)
+    cart_item2 = Cart(user_id=User.query.filter_by(username="gio").first().id, product_id=Product.query.filter_by(name="შაურმა დიდი").first().id, quantity=2)
+    db.session.add(cart_item1)
+    db.session.add(cart_item2)
 
     db.session.commit()
 
