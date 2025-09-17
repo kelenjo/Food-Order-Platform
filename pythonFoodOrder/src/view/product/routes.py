@@ -44,6 +44,29 @@ def add_to_cart():
     return jsonify({'status': 'success', 'item_name': product.name})
 
 
+@product_blueprint.route('/remove_from_cart', methods=['POST'])
+@login_required
+def remove_from_cart():
+    data = request.get_json()
+    item = Cart.query.get(data.get('item_id'))
+    if item and item.user_id == current_user.id:
+        item.delete()
+        return jsonify({'status': 'success'})
+    return jsonify({'status': 'error'})
+
+
+@product_blueprint.route('/update_cart_quantity', methods=['POST'])
+@login_required
+def update_cart_quantity():
+    data = request.get_json()
+    item = Cart.query.get(data.get('item_id'))
+    if item and item.user_id == current_user.id:
+        item.quantity = int(data.get('quantity', 1))
+        item.save()
+        return jsonify({'status': 'success'})
+    return jsonify({'status': 'error'})
+
+
 @product_blueprint.route("/product/<int:product_id>")
 def view(product_id):
     product = Product.query.get(product_id)
