@@ -64,6 +64,7 @@ def delete(user_id):
 @profile_blueprint.route("/edit", methods=["GET", "POST"])
 @profile_blueprint.route("/edit/<int:user_id>", methods=["GET", "POST"])
 @login_required
+@roles_required("Admin")
 def edit(user_id=None):
     # Case 1: no user_id -> edit current user's profile
     if user_id is None:

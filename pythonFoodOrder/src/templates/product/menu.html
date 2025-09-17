@@ -34,9 +34,12 @@
                                     <h4 class="card-title fw-bold">{{ item.name }}</h4>
                                     <p class="card-text fs-6 text-muted">{{ item.description }}</p>
                                     <p class="fw-bold fs-4 text-success">${{ item.price }}</p>
-                                    <a href="#" class="btn btn-lg btn-success px-4">Add to Cart</a>
+                                    <button class="btn btn-lg btn-success px-4 add-to-cart-btn" data-id="{{ item.id }}">
+                                        Add to Cart
+                                    </button>
                                 </div>
                             </div>
+
                         </a>
                     </div>
                     {% endfor %}
@@ -48,7 +51,50 @@
 </div>
 
 <!-- Smooth Scroll -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
+
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const itemId = this.dataset.id;
+
+        const response = await fetch('/add-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ item_id: itemId })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'not_logged_in') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'You must be logged in!',
+                text: 'Please log in to add items to your cart.'
+            });
+        } else if (data.status === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to Cart!',
+                text: data.item_name + ' has been added to your cart.',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Could not add item to cart.'
+            });
+        }
+    });
+});
+
+
 document.querySelectorAll('.list-group a').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -57,6 +103,8 @@ document.querySelectorAll('.list-group a').forEach(anchor => {
         });
     });
 });
+
+
 </script>
 
 <!-- Card Hover Effect -->
@@ -69,6 +117,8 @@ document.querySelectorAll('.list-group a').forEach(anchor => {
     transform: translateY(-8px) scale(1.03);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
+
+
 </style>
 
 {% endblock %}

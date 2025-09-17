@@ -13,6 +13,7 @@ class Product(BaseModel):
 
     category_id = db.Column(db.Integer, db.ForeignKey('Categories.id'), nullable=False)
     categories = db.relationship("Category", back_populates="products")
+    cart = db.relationship("Cart", back_populates="products")
 
     def __init__(self, name, price, description, image, category_id):
         self.name = name
@@ -51,3 +52,16 @@ class Offer(BaseModel):
 
     def __repr__(self):
         return f"This is offer: {self.title}"
+
+
+class Cart(BaseModel):
+
+    __tablename__ = "Cart"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
+    quantity = db.Column(db.Integer, default=1)
+
+    users = db.relationship("User", back_populates="cart")
+    products = db.relationship("Product", back_populates="cart")
+

@@ -1,5 +1,5 @@
 from src.ext import db
-from src.models import BaseModel
+from src.models import BaseModel, Cart
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -12,7 +12,8 @@ class User(BaseModel, UserMixin):
     email = db.Column(db.String, unique=True)
     _password = db.Column(db.String)
 
-    roles = db.relationship('Role', secondary="user_role", back_populates="users")
+    roles = db.relationship("Role", secondary="user_role", back_populates="users")
+    cart = db.relationship("Cart", back_populates="users")
 
     def __init__(self, username, email, password):
         self.username = username

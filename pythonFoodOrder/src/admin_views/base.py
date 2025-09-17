@@ -6,7 +6,7 @@ from flask import abort
 
 class SecureModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.roles.name == "admin"
+        return current_user.is_authenticated and current_user.has_role("Admin")
 
     def inaccessible_callback(self, name, **kwargs):
         return abort(403)
@@ -14,7 +14,7 @@ class SecureModelView(ModelView):
 
 class SecureIndexView(AdminIndexView):
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.roles.name == "admin"
+        return current_user.is_authenticated and current_user.has_role("Admin")
 
     def inaccessible_callback(self, name, **kwargs):
         return abort(403)
