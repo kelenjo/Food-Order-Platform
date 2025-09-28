@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, jsonify, request
+from flask import Blueprint, render_template, jsonify, request, flash, redirect, url_for
 from flask_login import current_user, login_required
 from src.models.product import Product, Category, Cart
 
@@ -17,20 +17,15 @@ def menu():
 @product_blueprint.route('/cart')
 @login_required
 def cart():
-    cart_items = current_user.cart
+    cart_items = Cart.query.filter_by(user_id=current_user.id).order_by(Cart.id.asc()).all()
     total_price = sum(item.quantity * item.products.price for item in cart_items)
     return render_template('product/cart.html', cart_items=cart_items, total_price=total_price)
 
 
-@product_blueprint.route('/add-to-cart', methods=['POST'])
+@product_blueprint.route('/add-to-cart/<int:product_id>', methods=['POST'])
 @login_required
-def add_to_cart():
-    data = request.get_json()
-    item_id = data.get('item_id')
-    product = Product.query.get(item_id)
-
-    if not product:
-        return jsonify({'status': 'error'})
+def add_to_cart(product_id):
+    product = Product.query.get_or_404(product_id)
 
     # Check if item already in cart
     cart_item = Cart.query.filter_by(user_id=current_user.id, product_id=product.id).first()
@@ -41,7 +36,8 @@ def add_to_cart():
         cart_item = Cart(user_id=current_user.id, product_id=product.id, quantity=1)
         cart_item.create()
 
-    return jsonify({'status': 'success', 'item_name': product.name})
+    # flash(f"{product.name} added to your cart!", "success")
+    return redirect(url_for('product.menu', added=product.name))
 
 
 @product_blueprint.route('/remove_from_cart', methods=['POST'])
