@@ -3,76 +3,133 @@
 {% block body %}
 
 <div class="container mt-5">
-    <h1 class="text-center mb-5">Your Cart</h1>
+    <h1 class="text-center mb-5 fw-bold">Your Cart</h1>
 
     {% if cart_items %}
-    <div class="table-responsive shadow-sm">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
-                <tr>
-                    <td>{{ item.products.name }}</td>
-                    <td>${{ item.products.price }}</td>
-                    <td>
-                        <input type="number" class="form-control quantity-input" min="1" value="{{ item.quantity }}" data-id="{{ item.id }}">
-                    </td>
-                    <td>${{ item.quantity * item.products.price }}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm remove-item-btn" data-id="{{ item.id }}">
-                            <i class="bi bi-trash"></i>
+    <div class="row g-4">
+        {% for item in cart_items %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-lg border-0 cart-card">
+                <img src="{{ url_for('static', filename='assets/' ~ item.products.image) }}"
+                     class="card-img-top"
+                     alt="{{ item.products.name }}"
+                     style="height: 200px; object-fit: cover; cursor: pointer;"
+                     onclick="window.location.href='{{ url_for('product.view', product_id=item.products.id) }}'">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <a href="{{ url_for('product.view', product_id=item.products.id) }}" class="text-decoration-none text-dark">
+                            {{ item.products.name }}
+                        </a>
+                    </h5>
+                    <p class="text-muted mb-1">Price: ${{ item.products.price }}</p>
+
+                    <!-- Quantity Controls -->
+                    <div class="d-flex align-items-center justify-content-between my-3">
+                        <button class="btn btn-outline-secondary btn-sm qty-btn" data-action="decrease" data-id="{{ item.id }}">−</button>
+                        <span class="mx-3 fw-bold fs-5" id="qty-{{ item.id }}">{{ item.quantity }}</span>
+                        <button class="btn btn-outline-secondary btn-sm qty-btn" data-action="increase" data-id="{{ item.id }}">+</button>
+                    </div>
+
+                    <p class="fw-bold text-success mt-2">Subtotal: ${{ item.quantity * item.products.price }}</p>
+
+                    <div class="mt-auto text-end">
+                        <button class="btn btn-outline-danger btn-sm remove-item-btn" data-id="{{ item.id }}">
+                            <i class="bi bi-trash me-1"></i> Remove
                         </button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Total Price Card -->
+    <div class="card shadow-sm border-0 mt-5">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <h4 class="fw-bold mb-0">Total: ${{ total_price }}</h4>
+            <a href="#" class="btn btn-lg btn-success px-4">Checkout</a>
+        </div>
     </div>
 
     {% else %}
     <div class="text-center mt-5">
-        <h3>Your cart is empty!</h3>
-        <a href="{{ url_for('product.menu') }}" class="btn btn-primary mt-3">Go to Menu</a>
+        <h3 class="fw-bold">🛒 Your cart is empty!</h3>
+        <a href="{{ url_for('product.menu') }}" class="btn btn-primary mt-3 px-4">Go to Menu</a>
     </div>
     {% endif %}
 </div>
 
-<!-- JS for updating quantity and removing items -->
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.querySelectorAll('.remove-item-btn').forEach(btn => {
-    btn.addEventListener('click', async function() {
+    btn.addEventListener('click', function() {
         const itemId = this.dataset.id;
-        const response = await fetch('/remove_from_cart', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({item_id: itemId})
+        Swal.fire({
+            title: 'Remove this item?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, remove it'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch('/remove_from_cart', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({item_id: itemId})
+                });
+                if ((await response.json()).status === 'success') {
+                    location.reload();
+                }
+            }
         });
-        if ((await response.json()).status === 'success') {
-            location.reload();
-        }
     });
 });
 
-document.querySelectorAll('.quantity-input').forEach(input => {
-    input.addEventListener('change', async function() {
+// Handle plus/minus buttons
+document.querySelectorAll('.qty-btn').forEach(btn => {
+    btn.addEventListener('click', async function() {
         const itemId = this.dataset.id;
-        const qty = this.value;
+        const action = this.dataset.action;
+        const qtySpan = document.getElementById('qty-' + itemId);
+        let newQty = parseInt(qtySpan.textContent);
+
+        if (action === "increase") {
+            newQty++;
+        } else if (action === "decrease" && newQty > 1) {
+            newQty--;
+        }
+
+        qtySpan.textContent = newQty;
+
         await fetch('/update_cart_quantity', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({item_id: itemId, quantity: qty})
+            body: JSON.stringify({item_id: itemId, quantity: newQty})
         });
         location.reload();
     });
 });
 </script>
+
+<!-- Styling -->
+<style>
+.cart-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.cart-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+.qty-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 0;
+}
+</style>
 
 {% endblock %}

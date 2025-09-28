@@ -11,30 +11,32 @@
                 <a class="nav-link {{ is_active('main.branches') }} fs-5 px-3" href="/branches">Branches</a>
                 <a class="nav-link {{ is_active('product.menu') }} fs-5 px-3" href="/menu">Menu</a>
             </div>
-        </div>
 
-        <!-- Right side buttons -->
-        <div class="d-flex align-items-center">
+            <!-- Right side buttons -->
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('profile.profile') }}" class="btn btn-success d-flex align-items-center px-3">
-                <i class="bi bi-person-circle me-2 fs-5"></i>
-                {{ current_user.username }}
-            </a>
-            <!-- Navbar Cart Icon -->
-            <li class="nav-item ms-3">
-                <a class="nav-link position-relative" href="{{ url_for('product.cart') }}">
+            <div class="d-flex align-items-center">
+                <!-- Cart icon first -->
+                <a class="nav-link position-relative me-4" href="{{ url_for('product.cart') }}">
                     <i class="bi bi-cart-fill fs-4"></i>
-                    {% if current_user.is_authenticated and cart_count > 0 %}
+                    {% if cart_count > 0 %}
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            {{ cart_count }}
-        </span>
+              {{ cart_count }}
+            </span>
                     {% endif %}
                 </a>
-            </li>
 
+                <!-- Profile button -->
+                <a href="{{ url_for('profile.profile') }}" class="btn btn-success d-flex align-items-center px-3">
+                    <i class="bi bi-person-circle me-2 fs-5"></i>
+                    {{ current_user.username }}
+                </a>
+            </div>
             {% else %}
-            <a href="{{ url_for('auth.login') }}" class="btn btn-success me-2 px-4">Log In</a>
-            <a href="{{ url_for('auth.register') }}" class="btn btn-outline-success px-4">Register</a>
+
+            <div class="d-flex align-items-center ms-auto">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-success me-2 px-4">Log In</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-success px-4">Register</a>
+            </div>
             {% endif %}
         </div>
     </div>

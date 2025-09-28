@@ -25,7 +25,7 @@
                 <div class="row g-4">
                     {% for item in products if item.category_id == category.id %}
                     <div class="col-md-4">
-                        <a href="product/{{item.id}}" class="text-decoration-none text-dark">
+                        <form action="{{ url_for('product.add_to_cart', product_id=item.id) }}" method="post">
                             <div class="card h-100 shadow-lg border-0 product-card">
                                 <img src="{{ url_for('static', filename='assets/' ~ item.image) }}"
                                      class="card-img-top" alt="{{ item.name }}"
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
 
-                        </a>
+                        </form>
                     </div>
                     {% endfor %}
                 </div>
@@ -51,61 +51,44 @@
 </div>
 
 <!-- Smooth Scroll -->
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const added = urlParams.get("added");
 
-document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-    btn.addEventListener('click', async function(e) {
-        e.preventDefault();
-        const itemId = this.dataset.id;
+    if (added) {
+      Swal.fire({
+        icon: "success",
+        title: "Added to Cart!",
+        text: added + " has been added to your cart.",
+        timer: 1500,
+        showConfirmButton: false
+      });
 
-        const response = await fetch('/add-to-cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ item_id: itemId })
-        });
-
-        const data = await response.json();
-
-        if (data.status === 'not_logged_in') {
-            Swal.fire({
-                icon: 'warning',
-                title: 'You must be logged in!',
-                text: 'Please log in to add items to your cart.'
-            });
-        } else if (data.status === 'success') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Added to Cart!',
-                text: data.item_name + ' has been added to your cart.',
-                timer: 1500,
-                showConfirmButton: false
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Could not add item to cart.'
-            });
-        }
-    });
-});
-
-
-document.querySelectorAll('.list-group a').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-});
-
-
+      // remove the ?added=... from URL so it doesn’t trigger again on refresh
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  });
 </script>
+<script>
+  // Save scroll position before unload
+  window.addEventListener("beforeunload", function () {
+    sessionStorage.setItem("scrollPosition", window.scrollY);
+  });
+
+  // Restore scroll position after load
+  window.addEventListener("load", function () {
+    const scrollY = sessionStorage.getItem("scrollPosition");
+    if (scrollY !== null) {
+      window.scrollTo(0, parseInt(scrollY));
+      sessionStorage.removeItem("scrollPosition"); // optional reset
+    }
+  });
+</script>
+
+
 
 <!-- Card Hover Effect -->
 <style>

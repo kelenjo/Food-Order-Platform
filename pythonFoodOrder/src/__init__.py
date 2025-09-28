@@ -48,8 +48,20 @@ def register_extensions(app):
     admin.init_app(app)
     admin.add_view(UserView(User, db.session, endpoint="user_admin"))
     admin.add_view(ProductView(Product, db.session, endpoint="product_admin"))
-
     admin.add_link(MenuLink("Back To Site", url="/", icon_type="fa", icon_value="fa-sing-out"))
+
+    # ✅ Global context processor
+    @app.context_processor
+    def cart_context():
+        from src.models import Cart  # import inside to avoid circular import
+        from flask_login import current_user
+
+        if current_user.is_authenticated:
+            cart_items = Cart.query.filter_by(user_id=current_user.id).all()
+            cart_count = sum(item.quantity for item in cart_items)
+        else:
+            cart_count = 0
+        return dict(cart_count=cart_count)
 
 
 def register_blueprints(app):
