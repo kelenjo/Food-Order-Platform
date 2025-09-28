@@ -1,36 +1,74 @@
 {% extends "partials/base.html" %}
 {% block title %}Branches{% endblock %}
 {% block body %}
-<div class="container mt-4">
-    <h1 class="mb-4 text-center">Our Branches</h1>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-3">
+
+<div class="container mt-5 mb-5">
+    <h1 class="text-center mb-5 fw-bold">Our Branches</h1>
+
+    <div class="row g-4 align-items-start">
+        <!-- Left column: branch info -->
+        <div class="col-lg-5">
+            <div class="card branch-card shadow-sm border-0 mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Branch 1</h5>
-                    <p class="card-text">123 Main Street, City</p>
-                    <p class="text-muted">Phone: +123 456 7890</p>
+                    <h5 class="card-title fw-bold">Skola</h5>
+                    <p class="card-text mb-1">Tbilis, Gldani I, N79 School</p>
+                    <p class="text-muted mb-0">Phone: +995 599 87 05 65</p>
+                </div>
+            </div>
+            <div class="card branch-card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Reforma</h5>
+                    <p class="card-text mb-1">Tbilis, Gldani I, Reforma</p>
+                    <p class="text-muted mb-0">Phone: +995 599 87 05 65</p>
+                </div>
+            </div>
+            <div class="card branch-card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Metro</h5>
+                    <p class="card-text mb-1">Tbilis, Gldani, Axmetelis Metro</p>
+                    <p class="text-muted mb-0">Phone: +995 599 87 05 65</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Branch 2</h5>
-                    <p class="card-text">456 Market Street, City</p>
-                    <p class="text-muted">Phone: +123 456 7890</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Branch 3</h5>
-                    <p class="card-text">789 Broadway, City</p>
-                    <p class="text-muted">Phone: +123 456 7890</p>
-                </div>
+
+        <!-- Right column: map -->
+        <div class="col-lg-7">
+            <div class="map-responsive">
+                <iframe src="https://www.google.com/maps/d/embed?mid=1XSrvyp_mmhnicwuxg5nFozGCPPyOtjo&ehbc=2E312F"
+                        width="640" height="480"></iframe>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Card Hover Effect and Map Styling -->
+<style>
+.branch-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 12px;
+}
+.branch-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+/* Make iframe responsive and avoid touching footer */
+.map-responsive {
+    overflow: hidden;
+    position: relative;
+    height: calc(100vh - 200px); /* 100% viewport minus header and footer */
+}
+.map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border-radius: 12px;
+}
+
+
+
+</style>
+
 {% endblock %}
