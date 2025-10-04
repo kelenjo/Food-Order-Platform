@@ -18,11 +18,13 @@ def menu():
 @login_required
 def cart():
     cart_items = Cart.query.filter_by(user_id=current_user.id).order_by(Cart.id.asc()).all()
-    total_price = sum(item.quantity * item.products.price for item in cart_items)
+    total_price = 0
+    for item in cart_items:
+        total_price += Product.query.get(item.product_id).price * item.quantity
     return render_template('product/cart.html', cart_items=cart_items, total_price=total_price)
 
 
-@product_blueprint.route('/add-to-cart/<int:product_id>', methods=['POST'])
+@product_blueprint.route('/add-to-cart/<int:product_id>', methods=['GET', 'POST'])
 @login_required
 def add_to_cart(product_id):
     product = Product.query.get_or_404(product_id)

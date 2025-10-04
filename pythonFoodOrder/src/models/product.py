@@ -13,7 +13,8 @@ class Product(BaseModel):
 
     category_id = db.Column(db.Integer, db.ForeignKey('Categories.id'), nullable=False)
     categories = db.relationship("Category", back_populates="products")
-    cart = db.relationship("Cart", back_populates="products")
+    users = db.relationship("User", secondary="Cart", back_populates="products")
+    cart = db.relationship("Cart", back_populates="products", viewonly=True)
 
     def __init__(self, name, price, description, image, category_id):
         self.name = name
@@ -61,7 +62,7 @@ class Cart(BaseModel):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
     quantity = db.Column(db.Integer, default=1)
-
-    users = db.relationship("User", back_populates="cart")
-    products = db.relationship("Product", back_populates="cart")
+    #
+    # users = db.relationship("User", back_populates="cart")
+    products = db.relationship("Product", back_populates="cart", viewonly=True)
 

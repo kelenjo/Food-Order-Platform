@@ -4,12 +4,12 @@ load_dotenv()
 
 from flask import Flask
 from src.admin_views.base import SecureModelView
-from src.admin_views import UserView, ProductView
+from src.admin_views import UserView, ProductView, CategoryView, OfferView
 from src.config import Config
 from src.ext import db, migrate, login_manager, admin
 from src.view import product_blueprint, auth_blueprint, main_blueprint, profile_blueprint
 from src.commands import init_db_command, populate_db_command
-from src.models import User, Product
+from src.models import User, Product, Category, Offer
 from flask_admin.menu import MenuLink
 
 Blueprints = [product_blueprint, auth_blueprint, main_blueprint, profile_blueprint]
@@ -48,6 +48,8 @@ def register_extensions(app):
     admin.init_app(app)
     admin.add_view(UserView(User, db.session, endpoint="user_admin"))
     admin.add_view(ProductView(Product, db.session, endpoint="product_admin"))
+    admin.add_view(CategoryView(Category, db.session, endpoint="category_admin"))
+    admin.add_view(OfferView(Offer, db.session, endpoint="offer_admin"))
     admin.add_link(MenuLink("Back To Site", url="/", icon_type="fa", icon_value="fa-sing-out"))
 
     # ✅ Global context processor

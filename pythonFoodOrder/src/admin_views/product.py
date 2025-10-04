@@ -16,9 +16,10 @@ class ProductView(SecureModelView):
     create_modal = True
     edit_modal = True
 
-    column_list = ["name", "price", "categories.name", "image", "description"]
+    column_list = ["id", "name", "price", "categories.name", "image", "description"]
     column_editable_list = ("name", "price", "description")
     column_filters = ["price", "name", "categories.name"]
+    column_searchable_list = ["name", "description"]
 
     column_formatters = {
         "name": lambda v, c, m, n: m.name if len(m.name) < 24 else m.name[:24] + "...",
@@ -26,7 +27,7 @@ class ProductView(SecureModelView):
             <a href='/static/assets/{m.image}' target='_blank'>
                 <img src='/static/assets/{m.image}' width=80 style='border-radius:6px'/>
             </a>
-        """)
+        """) if m.image else ""
     }
 
     form_columns = ['name', 'description', 'price', "category_id", 'image']
@@ -44,25 +45,31 @@ class ProductView(SecureModelView):
 
 
 class CategoryView(SecureModelView):
-    create_modal = True
-    edit_modal = True
-    column_list = ["name"]
+    create_modal = False
+    edit_modal = False
+    column_list = ["id", "name"]
     column_searchable_list = ["name"]
     column_editable_list = ["name"]
+    column_formatters = {}  # no inherited formatters
+    form_columns = ["name"] # only real column
 
 
 class OfferView(SecureModelView):
     create_modal = True
     edit_modal = True
-    column_list = ["title", "description", "active", "image"]
+
+    column_list = ["id", "title", "description", "active", "image"]
     column_editable_list = ["title", "description", "active"]
+    column_searchable_list = ["title", "description"]
+
     column_formatters = {
-        "image": lambda v,c,m,n: Markup(f"""
+        "image": lambda v, c, m, n: Markup(f"""
             <a href='/static/assets/{m.image}' target='_blank'>
                 <img src='/static/assets/{m.image}' width=80 style='border-radius:6px'/>
             </a>
-        """)
+        """) if m.image else ""
     }
+
     form_overrides = {"image": ImageUploadField}
     form_args = {
         "image": {
@@ -71,9 +78,3 @@ class OfferView(SecureModelView):
             "allow_overwrite": False
         }
     }
-
-
-class CartView(SecureModelView):
-    column_list = ["user_id", "product_id", "quantity"]
-    column_filters = ["user_id", "product_id"]
-    form_columns = ["user_id", "product_id", "quantity"]

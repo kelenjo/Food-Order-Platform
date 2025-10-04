@@ -13,7 +13,7 @@ class User(BaseModel, UserMixin):
     _password = db.Column(db.String)
 
     roles = db.relationship("Role", secondary="user_role", back_populates="users")
-    cart = db.relationship("Cart", back_populates="users")
+    products = db.relationship("Product", secondary="Cart", back_populates="users")
 
     def __init__(self, username, email, password):
         self.username = username
