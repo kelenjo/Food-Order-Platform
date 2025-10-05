@@ -96,7 +96,6 @@ class UserView(SecureModelView):
 
     # ------------------------
     # Prefill roles for edit form
-    # ------------------------
     def edit_form(self, obj=None):
         form = UserAdminForm()
         if obj:
