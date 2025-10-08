@@ -44,39 +44,24 @@ class UserView(SecureModelView):
     # Manual update
     # ------------------------
     def update_model(self, form, model):
-
         model.username = form.username.data
         model.email = form.email.data
         if form.password_plain.data:
             model.password = form.password_plain.data
-        db.session.commit()
 
-        # --------------------
-        # Fetch current roles
-        # --------------------
-        current_role_ids = set(
-            ur.role_id for ur in db.session.query(UserRole).filter(UserRole.user_id == model.id).all()
-        )
+        current_role_ids = {ur.role_id for ur in UserRole.query.filter_by(user_id=model.id).all()}
         new_role_ids = set(form.roles.data or [])
 
-        # --------------------
-        # Add new roles manually
-        # --------------------
+        # Add new roles
         for role_id in new_role_ids - current_role_ids:
-            ur = UserRole(user_id=model.id, role_id=role_id)
-            db.session.add(ur)
+            db.session.add(UserRole(user_id=model.id, role_id=role_id))
 
-        # --------------------
-        # Remove roles that were unchecked
-        # --------------------
+        # Remove unchecked roles
         for role_id in current_role_ids - new_role_ids:
-            db.session.query(UserRole).filter(
-                UserRole.user_id == model.id,
-                UserRole.role_id == role_id
-            ).delete()
+            UserRole.query.filter_by(user_id=model.id, role_id=role_id).delete()
 
         db.session.commit()
-        return True
+        return model
 
     # ------------------------
     # Manual deletion
@@ -97,13 +82,9 @@ class UserView(SecureModelView):
     # ------------------------
     # Prefill roles for edit form
     def edit_form(self, obj=None):
-        form = UserAdminForm()
+        form = super().edit_form(obj)
         if obj:
-            form.username.data = obj.username
-            form.email.data = obj.email
-            # manually fetch role ids from UserRole table
-            role_ids = [ur.role_id for ur in db.session.query(UserRole).filter(UserRole.user_id == obj.id).all()]
-            form.roles.data = role_ids
+            form.roles.data = [ur.role_id for ur in UserRole.query.filter_by(user_id=obj.id).all()]
         return form
 
     # ------------------------

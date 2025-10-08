@@ -26,20 +26,23 @@
                     {% for item in products if item.category_id == category.id %}
                     <div class="col-md-4">
                         <form action="{{ url_for('product.add_to_cart', product_id=item.id) }}" method="post">
-                            <div class="card h-100 shadow-lg border-0 product-card">
+                            <div class="card h-100 shadow-lg border-0 product-card"
+                                 onclick="window.location.href='{{ url_for('product.view', product_id=item.id) }}'"
+                                 style="cursor: pointer;">
                                 <img src="{{ url_for('static', filename='assets/' ~ item.image) }}"
-                                     class="card-img-top" alt="{{ item.name }}"
+                                     class="card-img-top"
+                                     alt="{{ item.name }}"
                                      style="height: 250px; object-fit: cover;">
                                 <div class="card-body text-center">
-                                    <h4 class="card-title fw-bold">{{ item.name }}</h4>
+                                    <h4 class="card-title fw-bold text-dark">{{ item.name }}</h4>
                                     <p class="card-text fs-6 text-muted">{{ item.description }}</p>
                                     <p class="fw-bold fs-4 text-success">${{ item.price }}</p>
-                                    <button class="btn btn-lg btn-success px-4 add-to-cart-btn" data-id="{{ item.id }}">
+                                    <button class="btn btn-lg btn-success px-4 add-to-cart-btn" data-id="{{ item.id }}"
+                                            onclick="event.stopPropagation();">
                                         Add to Cart
                                     </button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                     {% endfor %}
@@ -50,8 +53,7 @@
     </div>
 </div>
 
-<!-- Smooth Scroll -->
-
+<!-- SweetAlert for Added to Cart -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -67,41 +69,35 @@
         showConfirmButton: false
       });
 
-      // remove the ?added=... from URL so it doesn’t trigger again on refresh
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   });
 </script>
+
+<!-- Preserve Scroll Position -->
 <script>
-  // Save scroll position before unload
   window.addEventListener("beforeunload", function () {
     sessionStorage.setItem("scrollPosition", window.scrollY);
   });
 
-  // Restore scroll position after load
   window.addEventListener("load", function () {
     const scrollY = sessionStorage.getItem("scrollPosition");
     if (scrollY !== null) {
       window.scrollTo(0, parseInt(scrollY));
-      sessionStorage.removeItem("scrollPosition"); // optional reset
+      sessionStorage.removeItem("scrollPosition");
     }
   });
 </script>
-
-
 
 <!-- Card Hover Effect -->
 <style>
 .product-card {
     transition: transform 0.3s, box-shadow 0.3s;
 }
-
 .product-card:hover {
     transform: translateY(-8px) scale(1.03);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
-
-
 </style>
 
 {% endblock %}

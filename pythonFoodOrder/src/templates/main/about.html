@@ -2,7 +2,8 @@
 {% block title %}About Us{% endblock %}
 {% block body %}
 
-<div class="position-relative text-center text-white mb-5 pt-5" style="padding-top: 80px;">
+<!-- Hero Section -->
+<div class="position-relative text-center text-white mb-0 pt-0" style="padding-top: 80px;">
     <!-- Background Image -->
     <img src="{{ url_for('static', filename='assets/kele_logo.jpg') }}"
          class="img-fluid w-100"
@@ -19,15 +20,17 @@
     </div>
 </div>
 
-
 <!-- History Section -->
-<div class="container mb-5">
-    <div class="row align-items-center mb-4">
-        <div class="col-md-6">
-            <img src="https://via.placeholder.com/500x350" class="img-fluid rounded shadow" alt="Our Beginnings">
+<div class="container my-5 py-4">
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="{{ url_for('static', filename='assets/story.jpg') }}"
+                 class="img-fluid rounded shadow-sm w-100"
+                 alt="Our Story"
+                 style="object-fit: cover; height: 360px;">
         </div>
         <div class="col-md-6">
-            <h2>Our Story</h2>
+            <h2 class="mb-3">Our Story</h2>
             <p>
                 Kelenjo started as a small family restaurant in Tbilisi,
                 with a simple idea: serve fresh and authentic meals
@@ -38,11 +41,14 @@
     </div>
 
     <div class="row align-items-center flex-md-row-reverse">
-        <div class="col-md-6">
-            <img src="https://via.placeholder.com/500x350" class="img-fluid rounded shadow" alt="Growth">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="{{ url_for('static', filename='assets/growth.jpg') }}"
+                 class="img-fluid rounded shadow-sm w-100"
+                 alt="Our Growth"
+                 style="object-fit: cover; height: 360px;">
         </div>
         <div class="col-md-6">
-            <h2>Our Growth</h2>
+            <h2 class="mb-3">Our Growth</h2>
             <p>
                 From our humble beginnings, we’ve expanded our menu and services,
                 embracing innovation while staying true to our roots.
@@ -53,9 +59,9 @@
 </div>
 
 <!-- Team Section -->
-<div class="bg-light py-5">
+<div class="bg-light py-5 mt-5">
     <div class="container text-center">
-        <h2 class="mb-4">Meet Our Team</h2>
+        <h2 class="mb-5">Meet Our Team</h2>
         <div class="row">
             <div class="col-md-4 mb-4">
                 <img src="https://via.placeholder.com/200" class="rounded-circle mb-3 shadow" alt="Chef 1">
@@ -72,22 +78,6 @@
                 <h5>Chef Mari</h5>
                 <p class="text-muted">Creative Dishes</p>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Gallery Section -->
-<div class="container my-5">
-    <h2 class="text-center mb-4">A Glimpse of Kelenjo</h2>
-    <div class="row g-3">
-        <div class="col-md-4">
-            <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow" alt="Gallery 1">
-        </div>
-        <div class="col-md-4">
-            <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow" alt="Gallery 2">
-        </div>
-        <div class="col-md-4">
-            <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow" alt="Gallery 3">
         </div>
     </div>
 </div>

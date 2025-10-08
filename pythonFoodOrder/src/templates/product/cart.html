@@ -59,35 +59,38 @@
     {% endif %}
 </div>
 
-<!-- SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+async function removeItem(itemId) {
+    const result = await Swal.fire({
+        title: 'Remove this item?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, remove it'
+    });
+
+    if (result.isConfirmed) {
+        const response = await fetch('/remove_from_cart', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({item_id: itemId})
+        });
+        if ((await response.json()).status === 'success') {
+            location.reload();
+        }
+    }
+}
+
+// Trash button event
 document.querySelectorAll('.remove-item-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-        const itemId = this.dataset.id;
-        Swal.fire({
-            title: 'Remove this item?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Yes, remove it'
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                const response = await fetch('/remove_from_cart', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({item_id: itemId})
-                });
-                if ((await response.json()).status === 'success') {
-                    location.reload();
-                }
-            }
-        });
+        removeItem(this.dataset.id);
     });
 });
 
-// Handle plus/minus buttons
+// Quantity controls
 document.querySelectorAll('.qty-btn').forEach(btn => {
     btn.addEventListener('click', async function() {
         const itemId = this.dataset.id;
@@ -97,8 +100,14 @@ document.querySelectorAll('.qty-btn').forEach(btn => {
 
         if (action === "increase") {
             newQty++;
-        } else if (action === "decrease" && newQty > 1) {
-            newQty--;
+        } else if (action === "decrease") {
+            if (newQty > 1) {
+                newQty--;
+            } else {
+                // Reuse same remove dialog when qty = 1
+                await removeItem(itemId);
+                return; // stop after removal
+            }
         }
 
         qtySpan.textContent = newQty;
@@ -112,6 +121,7 @@ document.querySelectorAll('.qty-btn').forEach(btn => {
     });
 });
 </script>
+
 
 <!-- Styling -->
 <style>

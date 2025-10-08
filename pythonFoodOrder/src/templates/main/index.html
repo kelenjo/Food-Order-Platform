@@ -2,10 +2,10 @@
 {% block title %}Home{% endblock %}
 {% block body %}
 
-<!-- Carousel (Best Offers / News Center) -->
+<!-- ===== Hero Carousel ===== -->
 <div id="offersCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
 
-    <!-- Dynamic indicators -->
+    <!-- Indicators -->
     <div class="carousel-indicators">
         {% for offer in offers %}
         <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="{{ loop.index0 }}"
@@ -13,6 +13,7 @@
         {% endfor %}
     </div>
 
+    <!-- Slides -->
     <div class="carousel-inner rounded-4 shadow-lg">
         {% for offer in offers %}
         <div class="carousel-item {% if loop.first %}active{% endif %}">
@@ -26,6 +27,7 @@
         {% endfor %}
     </div>
 
+    <!-- Controls -->
     <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
     </button>
@@ -34,68 +36,94 @@
     </button>
 </div>
 
-<!-- Quick Links Section -->
+<!-- ===== Divider Line ===== -->
+<hr class="my-5 mx-auto" style="width: 80%; border-top: 2px solid #ddd;">
+
+<!-- ===== Quick Links Section ===== -->
 <div class="container my-5">
 
     <!-- Menu Section -->
-    <div class="row align-items-center mb-5">
-        <div class="col-md-6">
-            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="Menu">
+    <div class="row align-items-center mb-5 py-4">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="{{ url_for('static', filename='assets/menu.jpg') }}"
+                 class="img-fluid rounded-4 shadow-sm w-100"
+                 alt="Menu"
+                 style="object-fit: cover; height: 320px;">
         </div>
-        <div class="col-md-6">
-            <h2>Our Menu</h2>
-            <p>
+        <div class="col-md-6 ps-md-5">
+            <h2 class="fw-bold mb-3">Our Menu</h2>
+            <p class="mb-4">
                 Explore a variety of dishes, from local specialties to international
                 favorites. Whether dining in or ordering online, satisfaction is guaranteed.
             </p>
-            <a href="/menu" class="btn btn-dark">See Menu</a>
+            <a href="/menu" class="btn btn-dark px-4 py-2">See Menu</a>
         </div>
     </div>
 
+
     <!-- About Section -->
-    <div class="row align-items-center mb-5 flex-md-row-reverse">
-        <div class="col-md-6">
-            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="About Us">
+    <div class="row align-items-center mb-5 py-4 flex-md-row-reverse">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="{{ url_for('static', filename='assets/aboutus.jpg') }}"
+                 class="img-fluid rounded-4 shadow-sm w-100"
+                 alt="About Us"
+                 style="object-fit: cover; height: 320px;">
         </div>
-        <div class="col-md-6">
-            <h2>About Us</h2>
-            <p>
+        <div class="col-md-6 pe-md-5">
+            <h2 class="fw-bold mb-3">About Us</h2>
+            <p class="mb-4">
                 We bring delicious flavors to your table with love and passion.
                 At YourRestaurant, every dish is crafted with fresh ingredients
                 and authentic recipes.
             </p>
-            <a href="/about" class="btn btn-dark">Learn More</a>
+            <a href="/about" class="btn btn-dark px-4 py-2">Learn More</a>
         </div>
     </div>
 
+
     <!-- Feedback Section -->
-    <div class="row align-items-center mb-5">
-        <div class="col-md-6">
-            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="Feedback">
+    <div class="row align-items-center mb-5 py-4">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="{{ url_for('static', filename='assets/feedback.jpg') }}"
+                 class="img-fluid rounded-4 shadow-sm w-100"
+                 alt="Feedback"
+                 style="object-fit: cover; height: 320px;">
         </div>
-        <div class="col-md-6">
-            <h2>Customer Feedback</h2>
-            <p>
+        <div class="col-md-6 ps-md-5">
+            <h2 class="fw-bold mb-3">Customer Feedback</h2>
+            <p class="mb-4">
                 Our customers love us! Read their stories and share your own
                 dining experience with YourRestaurant.
             </p>
-            <a href="/feedback" class="btn btn-dark">Rate Us</a>
+            <a href="/feedback" class="btn btn-dark px-4 py-2">Rate Us</a>
         </div>
     </div>
-
 </div>
 
-
-<!-- Small CSS to add hover effect -->
+<!-- ===== Small CSS Enhancements ===== -->
 <style>
-  .hover-card:hover {
-    transform: scale(1.05);
-    transition: 0.3s ease;
-  }
   .carousel-img {
     height: 500px;
     object-fit: cover;
     border-radius: 1rem;
+  }
+
+  /* Simple section divider */
+  .divider-dot::before {
+    content: "• • •";
+    color: #aaa;
+    font-size: 1.5rem;
+    letter-spacing: 10px;
+  }
+
+  /* Subtle hover lift for cards/images */
+  img:hover {
+    transform: scale(1.03);
+    transition: all 0.4s ease;
+  }
+
+  h2 {
+    color: #333;
   }
 
 </style>
